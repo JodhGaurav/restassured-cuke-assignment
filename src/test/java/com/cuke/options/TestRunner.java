@@ -12,11 +12,11 @@ import org.junit.runner.RunWith;
         monochrome = true,
 		//tags = "@Regression",
         plugin = {
-                //"html:target/report/cucumber-reports/cucumber.html",
-                //"json:target/jsonReports/cucumber-report.json",
+                "html:target/report/cucumber-reports/cucumber.html",
+                "json:target/jsonReports/cucumber-report.json",
                 "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"
-        }
-        //publish = true
+        },
+        publish = true
 )
 public class TestRunner extends TestBase{
 

@@ -82,6 +82,26 @@
                     <testTarget>1.8</testTarget>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>tech.grasshopper</groupId>
+                <artifactId>extentreports-cucumberjson-plugin</artifactId>
+                <version>2.6.0</version>
+                <executions>
+                    <execution>
+                        <id>report</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>extentreport</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <cucumberJsonReportDirectory>${project.build.directory}/jsonReports</cucumberJsonReportDirectory>
+                    <extentPropertiesDirectory>${project.basedir}/src/test/resources</extentPropertiesDirectory>
+                    <displayAllHooks>false</displayAllHooks>
+                    <strictCucumber6Behavior>true</strictCucumber6Behavior>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
