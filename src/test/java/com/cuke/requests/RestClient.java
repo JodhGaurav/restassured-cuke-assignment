@@ -3,13 +3,9 @@ package com.cuke.requests;
 import com.cuke.options.SpecificationFactory;
 import com.cuke.options.TestBase;
 import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-
 import java.util.Map;
-
-import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
 
 
@@ -21,7 +17,7 @@ public class RestClient extends TestBase{
 	 */
 	public Response doGetRequest(String requestPath) {
 		
-		return given().log().all()
+		return given()
 		   		   .when()
 		   		   .get(requestPath);
 	}
@@ -34,8 +30,7 @@ public class RestClient extends TestBase{
 	public Response doPostRequest(String uri, Object body) {
 		
 		return given()
-				.contentType(ContentType.JSON)
-				.spec(SpecificationFactory.logPayloadResponseInfo())
+				.spec(SpecificationFactory.getRequestSpecWithJSONContentType())
 				.when()
 				.body(body)
 				.post(uri);
@@ -56,20 +51,6 @@ public class RestClient extends TestBase{
 	
 	/**
 	 * @param res
-	 * @param headers
-	 * @return Response
-	 */
-	public Response doGetRequestWithHeader(String res, Map<String, String> headers) {
-
-		return given()
-				.headers(headers)
-				.when()
-				.get(res);
-	}
-	
-	
-	/**
-	 * @param res
 	 * @param body
 	 * @return Response
 	 */
@@ -79,19 +60,6 @@ public class RestClient extends TestBase{
 				.when()
 				.body(body)
 				.put(res);
-	}
-	
-	/**
-	 * @param res
-	 * @param body
-	 * @return Response
-	 */
-	public Response doPatchRequest(String res , Object body) {
-
-		return given()
-				.when()
-				.body(body)
-				.patch(res);
 	}
 	
 	/**
@@ -111,7 +79,7 @@ public class RestClient extends TestBase{
 	 */
 	public RequestSpecification createRequestWithNewEndpoint(String endpoint) {
 
-		 return given().log().all()
+		 return given()
 				.spec(new RequestSpecBuilder().setBaseUri(endpoint).build())
 				.when();
 	}

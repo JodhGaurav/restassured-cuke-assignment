@@ -1,10 +1,10 @@
 package com.cuke.stepdefs;
 
-import com.cuke.requests.RequestFactory;
+import com.cuke.options.SpecificationFactory;
+import com.cuke.requests.ExRateFactory;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
@@ -16,38 +16,41 @@ import static org.hamcrest.Matchers.*;
 
 public class ExchangeRateSD {
 
-    RequestFactory requests = new RequestFactory();
+    ExRateFactory service = new ExRateFactory();
     Response response;
-    RequestSpecification req;
+    RequestSpecification request;
 
     @Given("I submit the Rate API to get {string} exchange rates")
-    public void i_submit_the_Rate_API_to_get_exchange_rates(String period) {
-        response = requests.getExchangeRates(period);
+    public void getExchangeRatesWithPeriod(String period) {
+        response = service.getExchangeRates(period);
     }
 
     @Then("I should get {int} response status code")
-    public void i_should_get_response_status_code(Integer code) {
-        response.then().statusCode(code);
+    public void validateStatusCode(Integer code) {
+        response.then()
+                .spec(SpecificationFactory.getGenericResponseSpec())
+                .statusCode(code);
     }
 
     @Then("I should get exchange rate of multiple countries for {string} date")
-    public void i_should_get_exchange_rate_of_multiple_countries_for_date(String period) {
+    public void validateTheResponseOfRateAPI(String period) {
         if(period.equalsIgnoreCase("current")){
             period = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         }
         response.then()
+                .spec(SpecificationFactory.getGenericResponseSpec())
                 .body("base", equalTo("EUR"))
                 .body("date",equalTo(period))
                 .body("rates.size()", greaterThan(1));
     }
 
     @Given("The endpoint is incorrect")
-    public void the_endpoint_is_incorrect() {
-        req = requests.setIncorrectEndpoint();
+    public void setIncorrectEndpointOfRateAPI() {
+        request = service.setNewEndpoint(baseURI+"s");
     }
 
     @And("I submit the Rate API to exchange rates")
-    public void iSubmitTheRateAPIToExchangeRates() {
-        response = req.get();
+    public void submitRequestSpecOfRateAPI() {
+        response = request.get();
     }
 }

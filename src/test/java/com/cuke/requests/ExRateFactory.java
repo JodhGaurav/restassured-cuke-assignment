@@ -11,8 +11,7 @@ import java.util.Map;
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
 
-public class RequestFactory{
-
+public class ExRateFactory {
 	
 	RestClient restClient = new RestClient();
 
@@ -40,13 +39,9 @@ public class RequestFactory{
 		return response;
 	}
 
-	public Response getRateWithIncorrectEndpoint() {
-		Response response = restClient.doGetRequest("/lat");
-		return response;
-	}
-
-	public RequestSpecification setIncorrectEndpoint() {
-		return restClient.createRequestWithNewEndpoint(baseURI+"ss");
+	//get Request with newly provided endpoint
+	public RequestSpecification setNewEndpoint(String endpoint) {
+		return restClient.createRequestWithNewEndpoint(endpoint);
 	}
 	
 }

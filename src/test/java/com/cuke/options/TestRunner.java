@@ -10,12 +10,13 @@ import org.junit.runner.RunWith;
         glue={"com.cuke.stepdefs"},
         dryRun = false,
         monochrome = true,
-//		tags = "@Regression",
-        plugin = {"progress",
-                "html:target/report/cucumber-reports/cucumber.html",
-                "junit:target/report/junit/cucumber-report.xml",
-                "json:target/jsonReports/cucumber-report.json"
+		//tags = "@Regression",
+        plugin = {
+                //"html:target/report/cucumber-reports/cucumber.html",
+                //"json:target/jsonReports/cucumber-report.json",
+                "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"
         }
+        //publish = true
 )
 public class TestRunner extends TestBase{
 
